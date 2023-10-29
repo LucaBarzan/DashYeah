@@ -7,11 +7,13 @@ namespace DashYeah.Object.Entity.Player
 {
     public class Player : Entity
     {
+        public float test = -2.0f;
+        [SerializeField] float gravity = -9.81f;
         [SerializeField] private float movementSpeed = 30.0f;
 
-        private Rigidbody rb;
+        private CharacterController characterController;
         private PlayerInputActions input;
-        private Vector2 inputMovement;
+        private Vector3 velocity;
 
         #region Engine
 
@@ -19,7 +21,7 @@ namespace DashYeah.Object.Entity.Player
         {
             base.Awake();
             input = new PlayerInputActions();
-            rb = GetComponent<Rigidbody>();
+            characterController = GetComponent<CharacterController>();
         }
 
         
@@ -27,9 +29,7 @@ namespace DashYeah.Object.Entity.Player
         protected override void OnEnable()
         {
             base.OnEnable();
-            input.Enable();
-            input.InGame.Movement.performed += OnMovementInputPerformed;
-            input.InGame.Movement.canceled += OnMovementInputCanceled;
+            input.InGame.Enable();
         }
 
         protected override void Start()
@@ -40,35 +40,37 @@ namespace DashYeah.Object.Entity.Player
         protected override void OnDisable()
         {
             base.OnDisable();
-            input.Disable();
-            input.InGame.Movement.performed -= OnMovementInputPerformed;
-            input.InGame.Movement.canceled -= OnMovementInputCanceled;
+            input.InGame.Disable();
         }
 
         protected override void Update()
         {
             base.Update();
+            
         }
 
         private void FixedUpdate()
         {
-            Vector3 movementDirection = new Vector3(inputMovement.x, 0.0f, inputMovement.y);
-            rb.velocity = movementSpeed * Time.deltaTime * movementDirection;
+            Vector2 inputMovement = input.InGame.Movement.ReadValue<Vector2>();
+
+            // Get the input direction
+            velocity = new Vector3(inputMovement.x, velocity.y, inputMovement.y);
+
+            // Add gravity
+            if (characterController.isGrounded && velocity.y < 0.0f)
+                velocity.y = -2.0f;
+
+            velocity.y += gravity * Time.deltaTime;
+
+            // Apply the final movement vector
+            characterController.Move(movementSpeed * Time.deltaTime * velocity);
         }
 
         #endregion // Engine
 
         #region Events
 
-        private void OnMovementInputPerformed(InputAction.CallbackContext value)
-        {
-            inputMovement = value.ReadValue<Vector2>();
-        }
 
-        private void OnMovementInputCanceled(InputAction.CallbackContext value)
-        {
-            inputMovement = value.ReadValue<Vector2>();
-        }
 
         #endregion // Events
     }
