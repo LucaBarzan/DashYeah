@@ -14,7 +14,7 @@ namespace DashYeah.Object.Entity.Player
         private CharacterController characterController;
         private PlayerInputActions input;
         private Vector3 velocity;
-
+        private const float GROUNDED_GRAVITY = -0.1f;
         #region Engine
 
         protected override void Awake()
@@ -51,19 +51,7 @@ namespace DashYeah.Object.Entity.Player
 
         private void FixedUpdate()
         {
-            Vector2 inputMovement = input.InGame.Movement.ReadValue<Vector2>();
-
-            // Get the input direction
-            velocity = new Vector3(inputMovement.x, velocity.y, inputMovement.y);
-
-            // Add gravity
-            if (characterController.isGrounded && velocity.y < 0.0f)
-                velocity.y = -2.0f;
-
-            velocity.y += gravity * Time.deltaTime;
-
-            // Apply the final movement vector
-            characterController.Move(movementSpeed * Time.deltaTime * velocity);
+            ApplyMovement();
         }
 
         #endregion // Engine
@@ -73,5 +61,33 @@ namespace DashYeah.Object.Entity.Player
 
 
         #endregion // Events
+
+        #region Movement
+
+        private void ApplyMovement()
+        {
+            // Get the input direction
+            Vector2 movementDirection = input.InGame.Movement.ReadValue<Vector2>();
+
+            // Add speed to the movement direction
+            movementDirection *= movementSpeed;
+
+            // Apply the new movement direction to the velocity
+            velocity = new Vector3(movementDirection.x, velocity.y, movementDirection.y);
+
+            // Apply a default little gravity if it is grounded
+            if (characterController.isGrounded)
+            {
+                velocity.y = GROUNDED_GRAVITY;
+            }
+
+            // Add gravity to the velocity
+            velocity.y += gravity * Time.deltaTime * Time.deltaTime;
+
+            // Apply the velocity
+            characterController.Move(velocity);
+        }
+
+        #endregion // Movement
     }
 }
