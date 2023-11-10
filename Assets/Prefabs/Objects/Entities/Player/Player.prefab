@@ -123,6 +123,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be3012b58d6242e48a9fd6020df641dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  movementSpeed: 0.2
-  jumpHeight: 1
-  jumpTime: 3
+  playerMovement:
+    movementSpeed: 5
+    gravityScale: 5
+    jumpHeight: 5
+    dashDistance: 0
+    dashCollisionLayers:
+      serializedVersion: 2
+      m_Bits: 0
