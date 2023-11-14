@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8743902842630055192}
   - component: {fileID: 6091920073601585748}
   - component: {fileID: 8960736313737415109}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,8 @@ MonoBehaviour:
     movementSpeed: 5
     gravityScale: 5
     jumpHeight: 5
-    dashDistance: 0
+    dashDistance: 10
+    dashSpeed: 50
     dashCollisionLayers:
       serializedVersion: 2
-      m_Bits: 0
+      m_Bits: 1

@@ -7,6 +7,8 @@ namespace DashYeah.Components.Player
     [System.Serializable]
     public class PlayerMovement
     {
+        #region Variables
+
         // Inpector exposed private varibles
         [Header("Basics")]
         [SerializeField] private float movementSpeed = 30.0f;
@@ -17,28 +19,43 @@ namespace DashYeah.Components.Player
 
         [Header("Dash")]
         [SerializeField] private float dashDistance = 5.0f;
+        [SerializeField] private float dashSpeed = 5.0f;
         [SerializeField] private LayerMask dashCollisionLayers;
 
         // Private variables
+        
+        // Components
         private Object.Entity.Player player;
         private CharacterController characterController;
+        private Transform playerTransform;
+
+        // Base Movement
         private Vector3 velocity;
         private float gravity;
         private float initialJumpVelocity;
-        private readonly StateMachine stateMachine = new StateMachine();
 
+        // Dash
+        private Vector3 dashTargetPosition;
+
+        #endregion // Variables
+
+        #region Constants
 
         // Private const
+        private readonly StateMachine stateMachine = new StateMachine();
         private const float GROUNDED_GRAVITY = -0.1f;
         private const int STATE_BASIC_MOVEMENT = 0;
         private const int STATE_DASH = 1;
 
+        #endregion // Constants
+
+        #region Setup
 
         public void Setup(Object.Entity.Player player)
         {
             this.player = player;
             SetupMovementVariables();
-            characterController = player.GetCharacterController();
+            SetupComponentVariables();
 
             stateMachine.AddEnterState(STATE_BASIC_MOVEMENT, BasicMovement_Enter);
             stateMachine.AddUpdateState(STATE_BASIC_MOVEMENT, BasicMovement_Update);
@@ -49,9 +66,24 @@ namespace DashYeah.Components.Player
             stateMachine.AddExitState(STATE_DASH, Dash_Exit);
         }
 
+        private void SetupMovementVariables()
+        {
+            gravity = Physics.gravity.y * gravityScale;
+            initialJumpVelocity = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
+        }
+
+        private void SetupComponentVariables()
+        {
+            characterController = player.GetCharacterController();
+            playerTransform = player.Transform;
+        }
+
+        #endregion // Setup
+
+        #region Engine
+
         public void Update()
         {
-
 #if UNITY_EDITOR
             // Update the inspector values every frame to make it easier for the Designers to tweek the values in real time
             SetupMovementVariables();
@@ -59,11 +91,7 @@ namespace DashYeah.Components.Player
             stateMachine.UpdateState();
         }
 
-        private void SetupMovementVariables()
-        {
-            gravity = Physics.gravity.y * gravityScale;
-            initialJumpVelocity = Mathf.Sqrt(jumpHeight * -2.0f * gravity);
-        }
+        #endregion // Engine
 
         #region Movement States
 
@@ -124,20 +152,14 @@ namespace DashYeah.Components.Player
 
         void Dash_Enter()
         {
-
-        }
-
-        void Dash_Update()
-        {
-            /*
             //Get the direction that the player is moving
-            Vector3 direction = Transform.forward * inputDirection;
+            Vector3 direction = new Vector3(player.GetInputDirection().x, 0.0f, player.GetInputDirection().y);
 
             //Get the radius of the character to simulate in the capsule raycast
             float radius = characterController.radius;
 
             //Do the sphere raycast
-            RaycastHit[] hits = Physics.SphereCastAll(Transform.position, radius, direction, dashDistance, dashCollisionLayers);
+            RaycastHit[] hits = Physics.SphereCastAll(playerTransform.position, radius, direction, dashDistance, dashCollisionLayers);
 
             //Get the closest collision if there was one
             float shortestDashDistance = dashDistance;
@@ -148,8 +170,18 @@ namespace DashYeah.Components.Player
             }
 
             //Add the Dash position to the player position
-            velocity = direction * shortestDashDistance;
-            */
+            dashTargetPosition = playerTransform.position + direction * shortestDashDistance;
+        }
+
+        void Dash_Update()
+        {
+            playerTransform.position = Vector3.MoveTowards(playerTransform.position, dashTargetPosition, dashSpeed * Time.deltaTime);
+            
+            // Check if dash finished
+            if(Vector3.Distance(playerTransform.position, dashTargetPosition) <= 0.1f)
+            {
+                stateMachine.CurrentState = STATE_BASIC_MOVEMENT;
+            }
         }
 
         void Dash_Exit()
