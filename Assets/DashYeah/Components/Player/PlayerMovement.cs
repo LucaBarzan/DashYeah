@@ -43,7 +43,7 @@ namespace DashYeah.Components.Player
 
         // Private const
         private readonly StateMachine stateMachine = new StateMachine();
-        private const float GROUNDED_GRAVITY = -0.1f;
+        private const float GROUNDED_GRAVITY = -2.0f;
         private const int STATE_BASIC_MOVEMENT = 0;
         private const int STATE_DASH = 1;
 

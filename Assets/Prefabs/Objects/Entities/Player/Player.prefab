@@ -126,8 +126,8 @@ MonoBehaviour:
   playerMovement:
     movementSpeed: 5
     gravityScale: 5
-    jumpHeight: 5
-    dashDistance: 10
+    jumpHeight: 2
+    dashDistance: 5
     dashSpeed: 50
     dashCollisionLayers:
       serializedVersion: 2

@@ -21,12 +21,12 @@ namespace DashYeah.Object
 
         }
 
-        protected virtual void OnDisable()
+        protected virtual void Update()
         {
 
         }
 
-        protected virtual void Update()
+        protected virtual void OnDisable()
         {
 
         }
