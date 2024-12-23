@@ -1407,7 +1407,7 @@ MonoBehaviour:
     m_Value: 0
   OutputChannel: 1
   StandbyUpdate: 2
-  m_StreamingVersion: 20170927
+  m_StreamingVersion: 20241001
   m_LegacyPriority: 0
   m_LookAt: {fileID: 309985416}
   m_Follow: {fileID: 309985416}
@@ -1474,11 +1474,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5119660811678238072, guid: 2380e2ecd1cf1b342b8e7bc43ad94f3f,
         type: 3}
-      propertyPath: m_RootOrder
-      value: 11
-      objectReference: {fileID: 0}
-    - target: {fileID: 5119660811678238072, guid: 2380e2ecd1cf1b342b8e7bc43ad94f3f,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 3.09
       objectReference: {fileID: 0}
@@ -1527,8 +1522,7 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6091920073601585748, guid: 2380e2ecd1cf1b342b8e7bc43ad94f3f, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

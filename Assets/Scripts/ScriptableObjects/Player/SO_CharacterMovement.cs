@@ -20,7 +20,10 @@ public class SO_CharacterMovement : ScriptableObject
     public float GroundingForce = -1.5f;
 
     [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
-    public float GrounderDistance = 0.05f;
+    public float CheckDistance_Vertical = 0.05f;
+
+    [Tooltip("The detection distance for wall detection"), Range(0f, 0.5f)]
+    public float CheckDistance_Horizontal = 0.05f;
 
     [Tooltip("Reset the player velocity when change direction to avoid slinding?")]
     public bool SnapControlOnChangeDirection = true;
@@ -73,4 +76,45 @@ public class SO_CharacterMovement : ScriptableObject
     
     [Tooltip("The slide acceleration when the player is on a non walkable slope")]
     public float NotWalkableSlope_SlideAcceleration = 110;
+
+    [Header("SWIMMING")]
+    [Tooltip("The surface area where the player starts to swim")]
+    [Range(0, 1)]
+    public float SwimSurfaceThreshold = 0.2f;
+
+    [Header("WALL CLING")]
+    [Tooltip("Distance to check walls")]
+    [Range(0.0f, 0.5f)]
+    public float WallCling_CheckDistance = 0.05f;
+
+    [Tooltip("Time to exit Wall Cling State, providing a window of opportunity for executing a wall jump")]
+    [Range(0.0f, 0.5f)]
+    public float WallCling_WallJumpTime = 0.2f;
+
+    [Tooltip("Time before start sliding")]
+    public float WallCling_TimeToSlide = 0.0f;
+
+    [Tooltip("The downwards slide speed")]
+    public float WallCling_SlideSpeed = 10.0f;
+
+    [Tooltip("The downwards slide acceleration")]
+    public float WallCling_SlideAcceleration = 10.0f;
+
+    [Tooltip("Specifies the speed at which the player adjusts its position to align with the wall surface during wall clinging")]
+    public float WallCling_StickToWallSpeed = 10.0f;
+
+    [Header("WALL JUMP")]
+    [Tooltip("The upwards wall jump force")]
+    public float WallJump_JumpForce = 0.0f;
+
+    [Tooltip("The player's capacity to gain fall speed while Jumping. a.k.a. Jump Gravity")]
+    public float WallJump_FallAcceleration = 10.0f;
+
+    [Tooltip("The direction of the jump in angles")]
+    [Range(0.0f, 90.0f)]
+    public float WallJump_JumpAngleDirection = 50.0f;
+
+    [Tooltip("The speed at which the player regains the ability to control the character's horizontal movement")]
+    public float WallJump_HorizontalInputDeceleration = 10.0f;
+
 }

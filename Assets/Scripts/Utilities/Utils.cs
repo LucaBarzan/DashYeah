@@ -15,7 +15,7 @@ public static class Utils
             return GameManager.Instance.GlobalSettings;
         }
     }
-    
+
     #region Variables
 
     private static readonly Dictionary<float, WaitForSeconds> WaitDictionary = new Dictionary<float, WaitForSeconds>();
@@ -54,6 +54,8 @@ public static class Utils
         if (gameObject != null)
             gameObject.SetActive(false);
     }
+
+    public static bool IsNull(this RaycastHit raycastHit) => raycastHit.collider == null;
 
     #endregion // Basic
 
