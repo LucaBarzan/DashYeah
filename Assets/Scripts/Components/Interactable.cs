@@ -45,15 +45,15 @@ public class Interactable : MonoBehaviour
 
     // Input
     private InputAction interactInputAction;
-    private PlayerInputActions input;
+    private Input input;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Read Onlys
 
     private readonly List<Collider2D> colliders2D = new List<Collider2D>();
 
-    #endregion // Constants
+    #endregion Constants
 
     #region Engine
 
@@ -62,7 +62,7 @@ public class Interactable : MonoBehaviour
         myTransform = transform;
         myCollider = GetComponent<Collider>();
         Collider2D = GetComponent<Collider2D>();
-        input = new PlayerInputActions();
+        input = new Input();
         interactInputAction = input.FindAction(interactInput.action.name);
 
         if (promptIcon_Transform != null)
@@ -96,7 +96,7 @@ public class Interactable : MonoBehaviour
         interactInputAction.performed -= OnInputInteract_performed;
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -133,7 +133,7 @@ public class Interactable : MonoBehaviour
         }
     }
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
 
@@ -209,5 +209,5 @@ public class Interactable : MonoBehaviour
         anim_PromptInputTransform = promptIcon_Transform.DOScale(Vector3.zero, promptIcon_AnimTime).SetEase(promptIcon_AnimEase);
     }
 
-    #endregion // Core
+    #endregion Core
 }

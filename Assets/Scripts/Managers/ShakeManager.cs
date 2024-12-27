@@ -23,7 +23,7 @@ public class ShakeManager : Singleton<ShakeManager>
     private float currentShakeDuration;
     private float currentShakeTimeToEnd;
 
-    #endregion // Variables
+    #endregion Variables
     
     #region Engine
     
@@ -36,7 +36,7 @@ public class ShakeManager : Singleton<ShakeManager>
         originalStrongImpulseDefinition.CopyValues(strongImpulseSource.m_ImpulseDefinition);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Utils
 
@@ -67,7 +67,7 @@ public class ShakeManager : Singleton<ShakeManager>
         // strongImpulseSource.m_ImpulseDefinition.CopyValues(originalStrongImpulseDefinition);
     }
 
-    #endregion // Core
+    #endregion Core
 
     public void Shake(EShake shake, float duration = 0.0f)
     {

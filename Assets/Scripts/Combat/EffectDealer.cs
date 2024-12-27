@@ -11,14 +11,14 @@ public abstract class EffectDealer<T> : MonoBehaviour where T : SO_DealEffect
     protected Transform myTransform;
     protected Collider2D myCollider;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & ReadOnly
 
     private readonly Pooler<HitEffect> poolerHitEffect_Fail = new Pooler<HitEffect>();
     private readonly Pooler<HitEffect> poolerHitEffect_Success = new Pooler<HitEffect>();
 
-    #endregion // Constants & ReadOnly
+    #endregion Constants & ReadOnly
 
     #region Engine
 
@@ -34,13 +34,13 @@ public abstract class EffectDealer<T> : MonoBehaviour where T : SO_DealEffect
             poolerHitEffect_Success.InitPool(gameObject, stats.HitEffectPrefab_Success);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
     public abstract void OnCollisionDetected(Collider2D other);
 
-    #endregion // Events
+    #endregion Events
 
     // Check if there is any obstacle in between the hitbox and the other object
     protected bool ObstacleFound(Vector2 direction)

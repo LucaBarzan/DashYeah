@@ -13,7 +13,7 @@ public class Health : MonoBehaviour
     public UnityEngine.Events.UnityEvent OnHealthEmpty;
     [SerializeField] private UnityEngine.Events.UnityEvent OnTakeDamages;
 
-    #endregion // Events
+    #endregion Events
 
     #region Variables
 
@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
     private float invulnerabilityTimer;
     private bool canTakeDamage = true;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -59,7 +59,7 @@ public class Health : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Core
 
@@ -140,5 +140,5 @@ public class Health : MonoBehaviour
         else if (increased)
             OnHealed?.Invoke(newHealth - health);
     }
-    #endregion // Core
+    #endregion Core
 }

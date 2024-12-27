@@ -12,7 +12,7 @@ public class UI_Menu : MonoBehaviour
 
     protected bool uiEnabled => gameState == GameManager.Instance.GameState;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -32,7 +32,7 @@ public class UI_Menu : MonoBehaviour
         fade.Update();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -48,12 +48,12 @@ public class UI_Menu : MonoBehaviour
         }
     }
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
     protected virtual void Show() => fade.Show();
 
     protected virtual void Hide(bool fade = true) => this.fade.Hide(fade);
 
-    #endregion // Core
+    #endregion Core
 }

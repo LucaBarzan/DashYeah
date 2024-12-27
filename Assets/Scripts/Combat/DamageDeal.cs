@@ -9,7 +9,7 @@ public class DamageDeal : EffectDealer<SO_DealDamage>
 
     public override void OnCollisionDetected(Collider2D other) => DealDamage(other, other.GetComponent<Health>(), stats.Value);
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
 
@@ -46,5 +46,5 @@ public class DamageDeal : EffectDealer<SO_DealDamage>
         OnDealDamage?.Invoke(damageableInfo);
     }
 
-    #endregion // Core
+    #endregion Core
 }

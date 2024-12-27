@@ -19,14 +19,14 @@ public class OneWayObject : MonoBehaviour
     private float originalThreshold = 0.0f;
     private bool canWalkOnOneWay = true;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Readonly
 
     private readonly List<SOneWayPlatformData> data = new List<SOneWayPlatformData>();
     private const float THRESHOLD_GOING_DOWN = 0.0f;
 
-    #endregion // Constants & Readonly
+    #endregion Constants & Readonly
 
     #region Engine
 
@@ -60,7 +60,7 @@ public class OneWayObject : MonoBehaviour
         UpdatePlatformsCollisions();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Core
 
@@ -134,7 +134,7 @@ public class OneWayObject : MonoBehaviour
         data[dataIndex] = newData;
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Public Methods
 
@@ -168,5 +168,5 @@ public class OneWayObject : MonoBehaviour
         }
     }
 
-    #endregion // Public Methods
+    #endregion Public Methods
 }

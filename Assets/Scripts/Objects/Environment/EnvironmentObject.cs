@@ -14,7 +14,7 @@ public class EnvironmentObject : MonoBehaviour
 
     private Transform myTransform;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -29,7 +29,7 @@ public class EnvironmentObject : MonoBehaviour
         // GatherEnvironments();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Core
 
@@ -44,7 +44,7 @@ public class EnvironmentObject : MonoBehaviour
         ChangeEnvironment(Environments[Environments.Count - 1]);
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Events
 
@@ -64,7 +64,7 @@ public class EnvironmentObject : MonoBehaviour
         GatherEnvironments();
     }
 
-    #endregion // Events
+    #endregion Events
 
     #region Utils
 
@@ -80,6 +80,6 @@ public class EnvironmentObject : MonoBehaviour
         Environments = other.Environments;
     }
 
-    #endregion // Utils
+    #endregion Utils
 
 }

@@ -22,7 +22,7 @@ public class CrushingBlock : Platform
     private Vector2 fallVelocity;
     private new Rigidbody2D rigidbody2D;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Read Only
 
@@ -34,7 +34,7 @@ public class CrushingBlock : Platform
 
     private readonly StateMachine stateMachine = new StateMachine();
 
-    #endregion // Constants & Read Only
+    #endregion Constants & Read Only
 
     #region Engine
 
@@ -62,7 +62,7 @@ public class CrushingBlock : Platform
         FixedUpdateOthersRigidbodies();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -95,7 +95,7 @@ public class CrushingBlock : Platform
         stateMachine.AddExitState(STATE_RETURNING, Exit_Returning);
     }
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Core
 
@@ -112,7 +112,7 @@ public class CrushingBlock : Platform
         }
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Events
 
@@ -229,5 +229,5 @@ public class CrushingBlock : Platform
 
     #endregion Returning State
 
-    #endregion // State machine
+    #endregion State machine
 }

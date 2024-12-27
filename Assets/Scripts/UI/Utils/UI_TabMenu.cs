@@ -10,9 +10,9 @@ public class UI_TabMenu : MonoBehaviour
 
     // private 
     private int currentTabIndex;
-    private PlayerInputActions.UIActions input;
+    private Input.UIActions input;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -25,7 +25,7 @@ public class UI_TabMenu : MonoBehaviour
 
     protected void Awake()
     {
-        input = InputManager.Instance.UIMap;
+        input = InputManager.Instance.UIActions;
 
         for(int i = 0; i < tabButtons.Length; i++)
         {
@@ -42,14 +42,14 @@ public class UI_TabMenu : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
     private void OnInput_NextTab_Performed(InputAction.CallbackContext context) => NextTab();
     private void OnInput_PreviousTab_Performed(InputAction.CallbackContext context) => PreviousTab();
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
 
@@ -79,7 +79,7 @@ public class UI_TabMenu : MonoBehaviour
         }
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Navigation
 

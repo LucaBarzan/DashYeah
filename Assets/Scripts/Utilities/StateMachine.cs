@@ -38,7 +38,7 @@ public sealed class StateMachine
     private MonoBehaviour monoBehaviour;
     private Coroutine changeUpdateCoroutine;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants
 
@@ -50,7 +50,7 @@ public sealed class StateMachine
 
     private readonly UnityEngine.WaitForEndOfFrame waitForEndOfFrame = new UnityEngine.WaitForEndOfFrame();
 
-    #endregion // Constants
+    #endregion Constants
 
     #region Private Methods
 
@@ -115,7 +115,7 @@ public sealed class StateMachine
 #endif
     }
 
-    #endregion // Private Methods
+    #endregion Private Methods
 
     #region Public Methods
 
@@ -192,5 +192,5 @@ public sealed class StateMachine
         return stateEnterActions.ContainsKey(state);
     }
 
-    #endregion // Public Methods
+    #endregion Public Methods
 }

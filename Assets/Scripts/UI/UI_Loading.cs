@@ -12,7 +12,7 @@ public class UI_Loading : UI_Menu
 
     private float loadingProgress;
 
-    #endregion // Variables
+    #endregion Variables
     
     #region Engine
     
@@ -30,7 +30,7 @@ public class UI_Loading : UI_Menu
         slider.value = Mathf.MoveTowards(slider.value, loadingProgress, loadingSmoothSpeed * Time.unscaledDeltaTime);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -53,5 +53,5 @@ public class UI_Loading : UI_Menu
         Hide();
     }
 
-    #endregion // Events
+    #endregion Events
 }

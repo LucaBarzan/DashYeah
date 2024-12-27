@@ -15,7 +15,7 @@ public class Ladder : MonoBehaviour
 
     [Tooltip("Vertical area where the player can climb represented by the gray line")]
     [SerializeField] private float height = 10.0f;
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -54,7 +54,7 @@ public class Ladder : MonoBehaviour
 
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -63,7 +63,7 @@ public class Ladder : MonoBehaviour
         // player.OnInteracted_Ladder(this);
     }
 
-    #endregion //Events
+    #endregion Events
 
     private void CalculateHeightPositions()
     {

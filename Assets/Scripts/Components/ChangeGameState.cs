@@ -9,7 +9,7 @@ public class ChangeGameState : MonoBehaviour
     public EGameState GameState;
     public bool OnStart = false;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -19,7 +19,7 @@ public class ChangeGameState : MonoBehaviour
             ChangeState();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     public void ChangeState() => GameManager.Instance.GameState = GameState;
 }

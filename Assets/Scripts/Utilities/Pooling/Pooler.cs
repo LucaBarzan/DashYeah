@@ -44,7 +44,7 @@ public class Pooler<T> : Pooler where T : PoolObject
 
     private Transform poolerRootTransform;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Core
     public void InitPool(GameObject gameObjectSpawner, T prefab, int initial = 10, int max = 20, bool collectionChecks = false)
@@ -73,7 +73,7 @@ public class Pooler<T> : Pooler where T : PoolObject
         pool.Release(poolObject as T);
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Overrides
     protected virtual T CreateSetup()
@@ -97,7 +97,7 @@ public class Pooler<T> : Pooler where T : PoolObject
     }
 
     protected virtual void DestroySetup(T obj) => GameObject.Destroy(obj);
-    #endregion // Overrides
+    #endregion Overrides
 
     #region Getters
     // Note: If you want to create a specialized "Get" method that better suits your needs,
@@ -135,5 +135,5 @@ public class Pooler<T> : Pooler where T : PoolObject
     }
 
     public void Release(T obj) => Pool.Release(obj);
-    #endregion // Getters
+    #endregion Getters
 }

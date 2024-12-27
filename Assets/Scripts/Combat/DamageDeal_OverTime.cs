@@ -10,7 +10,7 @@ public class DamageDeal_OverTime : DamageDeal
 
     private readonly List<Health> damageables = new List<Health>();
     private readonly List<Collider2D> colliders = new List<Collider2D>();
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
     private void Update()
@@ -23,7 +23,7 @@ public class DamageDeal_OverTime : DamageDeal
             DealDamage(colliders[i], damageables[i], stats.Value);
 
     }
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -49,5 +49,5 @@ public class DamageDeal_OverTime : DamageDeal
         }
     }
 
-    #endregion // Events
+    #endregion Events
 }

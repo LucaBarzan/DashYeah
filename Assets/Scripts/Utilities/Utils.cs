@@ -35,7 +35,7 @@ public static class Utils
         }
     }
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Basic
 
@@ -57,7 +57,7 @@ public static class Utils
 
     public static bool IsNull(this RaycastHit raycastHit) => raycastHit.collider == null;
 
-    #endregion // Basic
+    #endregion Basic
 
     #region Coroutine
 
@@ -83,7 +83,7 @@ public static class Utils
 
     public static WaitForEndOfFrame WaitForEndOfFrame() => waitForEndOfFrame;
 
-    #endregion // Coroutine
+    #endregion Coroutine
 
     #region Math
 
@@ -121,7 +121,7 @@ public static class Utils
     public static bool PercentualChance(float chance) => PercentualChance(chance, 0.0f, 1.0f);
     public static bool PercentualChance(float chance, float min, float max) => chance <= Random.Range(min, max);
 
-    #endregion // Math
+    #endregion Math
 
     #region UI
 
@@ -133,7 +133,7 @@ public static class Utils
         image.color = color;
     }
 
-    #endregion // UI
+    #endregion UI
 
     #region Layermask
 
@@ -156,7 +156,7 @@ public static class Utils
         return ((1 << layer) & layerMask) != 0;
     }
 
-    #endregion // Layermask
+    #endregion Layermask
 
     #region Transform
 
@@ -177,5 +177,5 @@ public static class Utils
         return Vector3.Distance(currentPosition, targetPosition) <= threshold;
     }
 
-    #endregion // Transform
+    #endregion Transform
 }

@@ -23,7 +23,7 @@ public class PickUpObject : MonoBehaviour
     // private MauiAbilities mauiAbilities;
     // private Maui maui;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -52,7 +52,7 @@ public class PickUpObject : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -86,10 +86,10 @@ public class PickUpObject : MonoBehaviour
     {
         myRigidbody2D.AddForce(throwForce, ForceMode2D.Impulse);
         OnObjectThrown?.Invoke();
-        ResetPickUpValues();  
+        ResetPickUpValues();
     }
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
 
@@ -98,16 +98,16 @@ public class PickUpObject : MonoBehaviour
         StartCoroutine(Reset());
     }
 
-    #endregion // Utils
+    #endregion Utils
 
-     private IEnumerator Reset()
+    private IEnumerator Reset()
     {
-            PickedUp = false;
-            //maui = null;          
-            //myRigidbody2D.CopyValues(in originalRigidbody2DCache);
-            gameObject.layer = originalLayerValue;
+        PickedUp = false;
+        //maui = null;          
+        //myRigidbody2D.CopyValues(in originalRigidbody2DCache);
+        gameObject.layer = originalLayerValue;
         yield return Utils.Wait(0.25f);
-            Physics2D.IgnoreCollision(myCollider2D, otherCollider2D, false);
+        Physics2D.IgnoreCollision(myCollider2D, otherCollider2D, false);
         yield return null;
     }
 }

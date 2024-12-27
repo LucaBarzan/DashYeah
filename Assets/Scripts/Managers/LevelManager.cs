@@ -20,7 +20,7 @@ public class LevelManager : Singleton<LevelManager>
 
     private readonly Dictionary<string, int> sceneBuildIndexByName = new Dictionary<string, int>();
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -30,7 +30,7 @@ public class LevelManager : Singleton<LevelManager>
         SetupVariables();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -49,7 +49,7 @@ public class LevelManager : Singleton<LevelManager>
         Levels = Scenes.Except(GameManager.Instance.GlobalSettings.NonGameplayScenes).ToArray();
     }
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Private
 
@@ -108,7 +108,7 @@ public class LevelManager : Singleton<LevelManager>
             yield return null;
     }
 
-    #endregion // Private
+    #endregion Private
 
     #region Public
 
@@ -122,5 +122,5 @@ public class LevelManager : Singleton<LevelManager>
         StartCoroutine(LoadSceneCoroutine(sceneBuildIndex));
     }
 
-    #endregion // Public
+    #endregion Public
 }

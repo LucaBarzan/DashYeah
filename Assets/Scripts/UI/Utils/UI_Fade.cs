@@ -13,7 +13,7 @@ public sealed class UI_Fade
     [SerializeField] private float fadeOutTime = 0.5f;
 
     private Tween fadeAnim;
-    #endregion // Variables
+    #endregion Variables
 
     public void Update()
     {
@@ -74,5 +74,5 @@ public sealed class UI_Fade
         canvasGroup.interactable = interactable;
     }
 
-    #endregion // Core
+    #endregion Core
 }

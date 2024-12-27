@@ -14,7 +14,7 @@ public class LoadScene : MonoBehaviour
     private Collider myCollider;
     protected Player player {  get; private set; }
 
-    #endregion // Variables
+    #endregion Variables
     
     #region Engine
     
@@ -31,7 +31,7 @@ public class LoadScene : MonoBehaviour
         myCollider.OnCollisionEnter.AddListener(OnCollision2DEnter);
     }
     
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -44,7 +44,7 @@ public class LoadScene : MonoBehaviour
         }
     }
 
-    #endregion // Events
+    #endregion Events
 
     public virtual void Load()
     {

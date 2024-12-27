@@ -16,8 +16,8 @@ public class CharacterMovement : Object
     // Components
     [SerializeField] private SO_CharacterMovement defaultMovementStats;
     [SerializeField] private CapsuleCollider capsuleCollider;
-    [SerializeField] private EnvironmentObject environmentObject;
     [SerializeField] private new Rigidbody rigidbody;
+    [SerializeField] private EnvironmentObject environmentObject;
 
     private SO_CharacterMovement movementStats;
 
@@ -31,10 +31,9 @@ public class CharacterMovement : Object
     private bool ceilingHit;
 
     private bool isGrounded = false;
-    private float horizontalSpeed = 0.0f;
+    private float horizontalSpeed;
     private float frameLeftGrounded = float.MinValue;
     private float frameResistance = 1.0f;
-    private float horizontalDeltaMovement;
 
     private Vector3 velocity;
     private Vector3 frameOverrideVelocity;
@@ -79,7 +78,7 @@ public class CharacterMovement : Object
     // Swimming State
     private float SwimYThresholdPosition;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants
 
@@ -101,7 +100,7 @@ public class CharacterMovement : Object
     private bool HasBufferedJump => bufferedJumpUsable && Time.time < timeJumpWasPressed + movementStats.JumpBuffer;
     private bool CanUseCoyote => coyoteUsable && !isGrounded && Time.time < frameLeftGrounded + movementStats.CoyoteTime;
 
-    #endregion // Constants
+    #endregion Constants
 
     #region Engine
 
@@ -109,6 +108,12 @@ public class CharacterMovement : Object
     {
         base.Awake();
         SetupStateMachine();
+        SetupVariables();
+    }
+
+    private void Start()
+    {
+        stateMachine.CurrentState = GetDefaultMovementState();
     }
 
     private void FixedUpdate()
@@ -116,11 +121,18 @@ public class CharacterMovement : Object
         if (!canMove)
             return;
 
+        CheckCollisions();
+        GatherCollisionsValues();
+        GatherGroundValues();
+        CheckStates();
+
         stateMachine.FixedUpdateState();
         ApplyMovement();
     }
 
-    #endregion // Engine
+    #endregion Engine
+
+    #region Setup
 
     private void SetupStateMachine()
     {
@@ -138,18 +150,36 @@ public class CharacterMovement : Object
         stateMachine.AddFixedUpdateState(STATE_AIRBORNE, FixedUpdate_Airborne);
         stateMachine.AddExitState(STATE_AIRBORNE, Exit_Airborne);
 
-        stateMachine.AddEnterState(STATE_SWIM, Enter_Swim_Crawl);
-        stateMachine.AddFixedUpdateState(STATE_SWIM, FixedUpdate_Swim_Crawl);
-        stateMachine.AddExitState(STATE_SWIM, Exit_Swim_Crawl);
+        // TODO
+        // stateMachine.AddEnterState(STATE_SWIM, Enter_Swim_Crawl);
+        // stateMachine.AddFixedUpdateState(STATE_SWIM, FixedUpdate_Swim_Crawl);
+        // stateMachine.AddExitState(STATE_SWIM, Exit_Swim_Crawl);
 
-        stateMachine.AddEnterState(STATE_WALL_CLING, Enter_WallCling);
-        stateMachine.AddFixedUpdateState(STATE_WALL_CLING, FixedUpdate_WallCling);
-        stateMachine.AddExitState(STATE_WALL_CLING, Exit_WallCling);
+        // TODO
+        // stateMachine.AddEnterState(STATE_WALL_CLING, Enter_WallCling);
+        // stateMachine.AddFixedUpdateState(STATE_WALL_CLING, FixedUpdate_WallCling);
+        // stateMachine.AddExitState(STATE_WALL_CLING, Exit_WallCling);
 
-        stateMachine.AddEnterState(STATE_WALL_JUMP, Enter_WallJump);
-        stateMachine.AddFixedUpdateState(STATE_WALL_JUMP, FixedUpdate_WallJump);
-        stateMachine.AddExitState(STATE_WALL_JUMP, Exit_WallJump);
+        // TODO
+        // stateMachine.AddEnterState(STATE_WALL_JUMP, Enter_WallJump);
+        // stateMachine.AddFixedUpdateState(STATE_WALL_JUMP, FixedUpdate_WallJump);
+        // stateMachine.AddExitState(STATE_WALL_JUMP, Exit_WallJump);
     }
+
+    private void SetupVariables()
+    {
+        movementStats = defaultMovementStats;
+        rigidbody.maxAngularVelocity = 0.0f;
+    }
+
+    #endregion Setup
+
+    #region Events
+
+    public void OnJump_Perform() => HandleJumpPerformed();
+    public void OnJump_Cancel() => HandleJumpCanceled();
+
+    #endregion Events
 
     #region Core
 
@@ -223,7 +253,7 @@ public class CharacterMovement : Object
         slopeAngle = Vector3.Angle(groundHit.normal, Vector3.up);
         walkableGround = slopeAngle <= movementStats.MaxSlopeAngle;
 
-        groundDirection = -Vector3.Perpendicular(groundHit.normal).normalized;
+        groundDirection = Vector3.zero;//TODO: -Vector3.Perpendicular(groundHit.normal).normalized;
         groundFlowSign = Mathf.Sign(Vector3.Dot(groundDirection, Vector3.down));
     }
 
@@ -305,7 +335,7 @@ public class CharacterMovement : Object
         OverrideForce(velocity);
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Movement States
 
@@ -325,8 +355,10 @@ public class CharacterMovement : Object
             return;
         }
 
-        HandleDirection_Grounded();
+        HandleOrientation_Grounded();
+        HandleSpeed_Grounded();
         HandleGravity_Grounded();
+
     }
 
     private void Exit_Grounded()
@@ -335,18 +367,28 @@ public class CharacterMovement : Object
             jumpsAvailable--;
     }
 
-    private void HandleDirection_Grounded()
+    private void HandleOrientation_Grounded()
     {
-        float horizontalInput = movementDirection.x;
+        var orientationDirection = Transform.forward;
 
-        if (!walkableGround)
+        if (movementDirection != Vector3.zero)
+            orientationDirection = movementDirection;
+
+        Transform.rotation = Quaternion.LookRotation(orientationDirection, Vector3.up);
+    }
+
+    private void HandleSpeed_Grounded()
+    {
+        // TODO
+        /* if (!walkableGround)
         {
             // Add reverse velocity to the player
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed,
+            horizontalVelocity = Mathf.MoveTowards(horizontalSpeed,
                 movementStats.NotWalkableSlope_MaxSlideSpeed * groundFlowSign,
                 movementStats.NotWalkableSlope_SlideAcceleration * Time.fixedDeltaTime);
         }
-        else if (horizontalInput == 0)
+        else*/
+        if (movementDirection == Vector3.zero)
         {
             var deceleration = movementStats.GroundDeceleration;
             horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, 0, deceleration * Time.fixedDeltaTime);
@@ -354,16 +396,10 @@ public class CharacterMovement : Object
         // Is grounded or on the air
         else
         {
-            float horizontalTargetSpeed = movementStats.MaxSpeed * horizontalInput;
-
-            if (movementStats.SnapControlOnChangeDirection && movementDirection != lastMovementDirection)
-                horizontalSpeed *= -1;
-
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, horizontalTargetSpeed, movementStats.Acceleration * Time.fixedDeltaTime);
+            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, movementStats.MaxSpeed, movementStats.Acceleration * Time.fixedDeltaTime);
         }
 
-        // We must multiply the player momentum by the ground sign direction
-        velocity.x = horizontalSpeed * groundDirection.x;
+        velocity = horizontalSpeed * Transform.forward;
     }
 
     private void HandleGravity_Grounded()
@@ -378,14 +414,20 @@ public class CharacterMovement : Object
         if (frameAdditionalVelocity != Vector3.zero)
             return;
 
+        // TODO
         // Apply the ground Y direction to the Y velocity
         velocity.y = groundDirection.y * horizontalSpeed;
+
+        if (velocity.y != 0)
+            Debug.Log(velocity.y);
+
+        Debug.DrawRay(groundHit.point, groundHit.normal, Color.red, 5.0f);
 
         // Apply the grounded force to the ground perpendicular direction
         velocity += groundHit.normal * movementStats.GroundingForce;
     }
 
-    #endregion // Grounded State
+    #endregion Grounded State
 
     #region Jump State
 
@@ -411,7 +453,7 @@ public class CharacterMovement : Object
 
     }
 
-    private void HandleJumpInputPerformed()
+    private void HandleJumpPerformed()
     {
         timeJumpWasPressed = Time.time;
 
@@ -428,7 +470,7 @@ public class CharacterMovement : Object
         ExecuteJump();
     }
 
-    private void HandleJumpInputReleased()
+    private void HandleJumpCanceled()
     {
         if (stateMachine.CurrentState == STATE_JUMP ||
             stateMachine.CurrentState == STATE_WALL_JUMP)
@@ -436,6 +478,39 @@ public class CharacterMovement : Object
             endedJumpEarly = true;
             stateMachine.CurrentState = STATE_AIRBORNE;
         }
+    }
+
+    public void ExecuteJump()
+    {
+        ResetImpulseValues();
+
+        velocity.y = movementStats.JumpPower;
+
+        if (isOnEnvironmentSurfaceLevel)
+            velocity.y *= environment.Stats.EnvironmentSurfaceJumpMultiplier;
+
+        stateMachine.CurrentState = STATE_JUMP;
+    }
+
+    private void ResetJumpValues()
+    {
+        coyoteUsable = true;
+        bufferedJumpUsable = false;
+        endedJumpEarly = false;
+        jumpsAvailable = movementStats.JumpAmount;
+    }
+
+    private bool CanJump()
+    {
+        if (stateMachine.CurrentState == STATE_WALL_CLING ||
+            stateMachine.CurrentState == STATE_WALL_JUMP)
+            return false;
+
+        if (isGrounded && !walkableGround)
+            return false;
+
+        // Check if the player still has jumps available to use
+        return jumpsAvailable > 0 || CanUseCoyote;
     }
 
     private void HandleGravity_Jump(float goingUpGravity, float goingDownGravity)
@@ -474,43 +549,7 @@ public class CharacterMovement : Object
         }
     }
 
-    public void ExecuteJump()
-    {
-        ResetImpulseValues();
-
-        velocity.y = movementStats.JumpPower;
-
-        if (isOnEnvironmentSurfaceLevel)
-            velocity.y *= environment.Stats.EnvironmentSurfaceJumpMultiplier;
-
-        stateMachine.CurrentState = STATE_JUMP;
-    }
-
-    private void ResetJumpValues()
-    {
-        coyoteUsable = true;
-        bufferedJumpUsable = false;
-        endedJumpEarly = false;
-        jumpsAvailable = movementStats.JumpAmount;
-    }
-
-    private bool CanJump()
-    {
-        if (stateMachine.CurrentState == STATE_WALL_CLING ||
-            stateMachine.CurrentState == STATE_WALL_JUMP)
-            return false;
-
-        if (isGrounded && !walkableGround)
-            return false;
-
-        // Check if the player still has jumps available to use
-        if (jumpsAvailable <= 0 && !CanUseCoyote)
-            return false;
-
-        return true;
-    }
-
-    #endregion // Jump State
+    #endregion Jump State
 
     #region Airborne State
 
@@ -584,7 +623,7 @@ public class CharacterMovement : Object
         velocity.y = Mathf.MoveTowards(velocity.y, targetYvelocity, inAirGravity * Time.fixedDeltaTime);
     }
 
-    #endregion // Airborne State
+    #endregion Airborne State
 
     #region Swimming State
 
@@ -618,13 +657,14 @@ public class CharacterMovement : Object
         Transform.MoveTowards(swimPosition, 3.0f * Time.deltaTime);
     }
 
-    #endregion // Swimming State
+    #endregion Swimming State
 
     #region Wall Cling State
 
     private void Enter_WallCling()
     {
-        wallClingDirectionSign = HorizontalDirection;
+        // TODO
+        // wallClingDirectionSign = HorizontalDirection;
 
         wallClingSlideTime = Time.time + movementStats.WallCling_TimeToSlide;
         wallClingExitTime = 0.0f;
@@ -633,13 +673,15 @@ public class CharacterMovement : Object
 
     private void FixedUpdate_WallCling()
     {
-        if (isGrounded || (wallHit.IsNull() && HorizontalDirection == wallClingDirectionSign))
+        // TODO
+        if (isGrounded || (wallHit.IsNull() /*&& HorizontalDirection == wallClingDirectionSign*/))
         {
             stateMachine.CurrentState = GetDefaultMovementState();
             return;
         }
 
-        if (wallClingDirectionSign != HorizontalDirection)
+        // TODO
+        if (true /*wallClingDirectionSign != HorizontalDirection*/)
         {
             wallClingExitTime += Time.fixedDeltaTime;
 
@@ -656,8 +698,9 @@ public class CharacterMovement : Object
 
     private void Exit_WallCling()
     {
-        horizontalSpeed = HorizontalDirection * 0.1f;
-        velocity.x = HorizontalDirection * 0.1f;
+        // TODO
+        // horizontalSpeed = HorizontalDirection * 0.1f;
+        // velocity.x = HorizontalDirection * 0.1f;
     }
 
     private void HandleGravity_WallCling()
@@ -675,7 +718,7 @@ public class CharacterMovement : Object
         Transform.MoveTowards(newposition, movementStats.WallCling_StickToWallSpeed * Time.fixedDeltaTime);
     }
 
-    #endregion // Wall Cling State
+    #endregion Wall Cling State
 
     #region Wall Jump State
 
@@ -693,7 +736,8 @@ public class CharacterMovement : Object
 
         OverrideForce(wallJumpResult);
 
-        SetHorizontalDirection(wallJumpResult.x);
+        // TODO
+        // SetHorizontalDirection(wallJumpResult.x);
         horizontalSpeed = wallJumpResult.x;
         wallJumpHorizontalControl = 0.0f;
 
@@ -725,9 +769,9 @@ public class CharacterMovement : Object
         HandleDirection_Airborne(wallJumpHorizontalControl);
     }
 
-    #endregion // Wall Jump State
+    #endregion Wall Jump State
 
-    #endregion // Movement States
+    #endregion Movement States
 
     #region Public methods
 

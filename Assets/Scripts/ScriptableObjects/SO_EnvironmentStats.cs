@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "EnvironmentStats", menuName = "Aumakua/EnvironmentStats")]
+[CreateAssetMenu(fileName = "EnvironmentStats", menuName = "Scriptable Objects/EnvironmentStats")]
 public class SO_EnvironmentStats : ScriptableObject
 {
     [Header("General")]

@@ -25,7 +25,7 @@ public class HitEffect : PoolObject
     private const float ANGLE_MIN = 0.0f;
     private const float ANGLE_MAX = 360.0f;
 
-    #endregion // Constants & ReadOnly
+    #endregion Constants & ReadOnly
 
     #region Engine
 
@@ -37,7 +37,7 @@ public class HitEffect : PoolObject
         base.OnDisable();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     public void Show()
     {

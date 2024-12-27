@@ -9,7 +9,7 @@ public class StatusDeal : EffectDealer<SO_DealStatus>
 
     public override void OnCollisionDetected(Collider2D other) => DealStatus(other);
 
-    #endregion // Events
+    #endregion Events
 
     #region Core
 
@@ -29,5 +29,5 @@ public class StatusDeal : EffectDealer<SO_DealStatus>
         }
     }
 
-    #endregion // Core
+    #endregion Core
 }

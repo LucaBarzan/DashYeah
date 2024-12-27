@@ -34,7 +34,7 @@ public class DisapearingObject : MonoBehaviour
     private float hiddenTimer = 0f;
     private Tween fadeAnim;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Read Only
 
@@ -44,7 +44,7 @@ public class DisapearingObject : MonoBehaviour
 
     private readonly StateMachine stateMachine = new StateMachine();
 
-    #endregion // Constants & Read Only
+    #endregion Constants & Read Only
 
     #region Engine
 
@@ -65,7 +65,7 @@ public class DisapearingObject : MonoBehaviour
         stateMachine.UpdateState();
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -87,7 +87,7 @@ public class DisapearingObject : MonoBehaviour
         stateMachine.AddExitState(STATE_HIDDEN, Exit_Hidden);
     }
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Core
 
@@ -172,5 +172,5 @@ public class DisapearingObject : MonoBehaviour
 
     #endregion Fading State
 
-    #endregion // State machine
+    #endregion State machine
 }

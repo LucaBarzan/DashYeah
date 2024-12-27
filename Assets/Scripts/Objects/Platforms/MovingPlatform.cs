@@ -20,7 +20,7 @@ public class MovingPlatform : Platform
 
     private Rigidbody2D myRigidbody2D;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Read Only
 
@@ -30,7 +30,7 @@ public class MovingPlatform : Platform
     private Vector2 previousPointPosition => pointsPositions[previousPoint];
     private readonly StateMachine stateMachine = new StateMachine();
 
-    #endregion // Constants & Read Only
+    #endregion Constants & Read Only
 
     #region Engine
 
@@ -70,7 +70,7 @@ public class MovingPlatform : Platform
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -99,7 +99,7 @@ public class MovingPlatform : Platform
         stateMachine.AddExitState(STATE_WAITING, Exit_Waiting);
     }
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Core
 
@@ -129,7 +129,7 @@ public class MovingPlatform : Platform
         direction = (currentPointPosition - previousPointPosition).normalized;
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region State machine
 
@@ -169,7 +169,7 @@ public class MovingPlatform : Platform
         return Vector2.Dot(direction, currentPointPosition - (Vector2)Transform.position) <= 0.0f;
     }
 
-    #endregion // Moving State
+    #endregion Moving State
 
     #region Waiting State
 
@@ -195,7 +195,7 @@ public class MovingPlatform : Platform
 
     }
 
-    #endregion // Waiting State
+    #endregion Waiting State
 
-    #endregion // State machine
+    #endregion State machine
 }

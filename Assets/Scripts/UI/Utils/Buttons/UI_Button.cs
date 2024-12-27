@@ -10,7 +10,7 @@ public class UI_Button : MonoBehaviour
     public Button Button { get; private set; }
     public RectTransform RectTransform { get; private set; }
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -20,5 +20,5 @@ public class UI_Button : MonoBehaviour
         RectTransform = GetComponent<RectTransform>();
     }
 
-    #endregion // Engine
+    #endregion Engine
 }

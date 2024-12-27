@@ -39,22 +39,13 @@ public class GameManager : Singleton<GameManager>
     // Game Data
     [SerializeField] private SO_GlobalSettings globalSettings;
 
-    private int saveSlot = -1;
-    private bool loadingSlot;
-    private PlayerInputActions.InGameActions input;
+    private Input.InGameActions input;
 
     // Game State
     private EGameState gameState;
     private EGameState lastGameState;
 
-    #endregion // Variables
-
-    #region Constants
-
-    private const string FILE_NAME_SETTINGS = "maui.settings";
-    private const string FILE_NAME_EXTENSION_SAVE_SLOT = ".sav";
-
-    #endregion // Constants
+    #endregion Variables
 
     #region Engine
 
@@ -65,13 +56,11 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
-        input = InputManager.Instance.InGameMap;
+        input = InputManager.Instance.InGameActions;
         input.Pause.performed += OnPauseInput_Performed;
-        input.Inventory.performed += OnInventoryInput_Performed;
-        input.DebugConsole.performed += OnDebugConsole_Performed;
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -108,16 +97,12 @@ public class GameManager : Singleton<GameManager>
 
     private void OnPauseInput_Performed(InputAction.CallbackContext context) => GameState = EGameState.Menu_Pause;
 
-    private void OnInventoryInput_Performed(InputAction.CallbackContext context) => GameState = EGameState.Menu_Inventory;
-
-    private void OnDebugConsole_Performed(InputAction.CallbackContext context) => GameState = EGameState.DebugConsole;
-
     public void OnPlayerDied()
     {
-
+        // TODO
     }
 
     public void OnDeathAnimationFinished() => GameState = EGameState.Menu_Death;
 
-    #endregion // Events
+    #endregion Events
 }

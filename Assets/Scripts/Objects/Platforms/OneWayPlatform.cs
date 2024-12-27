@@ -29,7 +29,7 @@ public class OneWayPlatform : Platform
         RemoveOneWayPlatform(this);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Static methods
 
@@ -45,5 +45,5 @@ public class OneWayPlatform : Platform
             OneWayPlatforms.Remove(oneWayPlatform);
     }
 
-    #endregion// Static methods
+    #endregion Static methods
 }

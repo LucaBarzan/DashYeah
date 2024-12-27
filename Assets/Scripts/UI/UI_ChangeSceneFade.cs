@@ -14,14 +14,14 @@ public class UI_ChangeSceneFade : Singleton<UI_ChangeSceneFade>
 
     private Tween tween;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & Readonly
 
     private const float FADE_IN_VALUE = 1.0f;
     private const float FADE_OUT_VALUE = 0.0f;
 
-    #endregion // Constants & Readonly
+    #endregion Constants & Readonly
 
     public void SceneFadeIn(Action OnFadeFinished = null)
     {

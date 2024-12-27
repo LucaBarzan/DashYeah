@@ -14,13 +14,13 @@ public class Collider : MonoBehaviour
     public LayerMask LayerMaskCollissions;
     public string Tag;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants
 
     private const string TAG_UNTAGGED = "Untagged";
 
-    #endregion // Constants
+    #endregion Constants
 
     #region Engine
 
@@ -77,7 +77,7 @@ public class Collider : MonoBehaviour
             OnEnterCollider(in collider);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Collisions
 
@@ -105,7 +105,7 @@ public class Collider : MonoBehaviour
         OnCollisionExit?.Invoke(other);
     }
 
-    #endregion // Collisions
+    #endregion Collisions
 
     #region Utils
 
@@ -144,5 +144,5 @@ public class Collider : MonoBehaviour
         }
     }
 
-    #endregion // Utils
+    #endregion Utils
 }

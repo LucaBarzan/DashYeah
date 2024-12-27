@@ -14,14 +14,14 @@ public class StatusAffectable : MonoBehaviour
     [SerializeField] private StatusInfoSO info;
     [SerializeField] private List<EStatus> isNotAffectedBy;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & ReadOnlys
 
     private readonly List<EStatus> statuses = new List<EStatus>();
     private readonly Dictionary<EStatus, float> timers = new Dictionary<EStatus, float>();
 
-    #endregion // Constants & ReadOnlys
+    #endregion Constants & ReadOnlys
 
     #region Engine
 
@@ -43,7 +43,7 @@ public class StatusAffectable : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -55,7 +55,7 @@ public class StatusAffectable : MonoBehaviour
             timers.Remove(status);
     }
 
-    #endregion // Events
+    #endregion Events
 
     public bool AddStatus(EStatus status)
     {

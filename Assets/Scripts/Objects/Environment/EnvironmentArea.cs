@@ -16,7 +16,7 @@ public class EnvironmentArea : MonoBehaviour
     public SO_EnvironmentStats Stats => environmentStats;
     public SO_CharacterMovement EnvironmentMovementStats => environmentMovementStats;
 
-    #endregion // Getters
+    #endregion Getters
 
     [SerializeField] private SO_CharacterMovement environmentMovementStats;
     [SerializeField] private SO_EnvironmentStats environmentStats;
@@ -24,7 +24,7 @@ public class EnvironmentArea : MonoBehaviour
     private Collider myCollider;
     private Collider2D myCollider2D;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -49,7 +49,7 @@ public class EnvironmentArea : MonoBehaviour
     }
 #endif
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -70,7 +70,7 @@ public class EnvironmentArea : MonoBehaviour
             environmentObject.OnEnvironmentExit(this);
     }
 
-    #endregion // Events
+    #endregion Events
 
     private void UpdateSurfaces()
     {

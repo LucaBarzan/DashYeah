@@ -41,7 +41,7 @@ public class FallingBlock : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Public Methods
 
@@ -51,6 +51,6 @@ public class FallingBlock : MonoBehaviour
         animator.enabled = true;
     }
 
-    #endregion // Public Methods
+    #endregion Public Methods
 
 }

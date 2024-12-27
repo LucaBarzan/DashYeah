@@ -7,7 +7,7 @@ public class PoolObject : MonoBehaviour
 
     private Action<PoolObject> OnReleasePoolObject;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -16,7 +16,7 @@ public class PoolObject : MonoBehaviour
         OnReleasePoolObject?.Invoke(this);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -25,5 +25,5 @@ public class PoolObject : MonoBehaviour
         OnReleasePoolObject = PoolerReleaseAction;
     }
 
-    #endregion // Setup
+    #endregion Setup
 }

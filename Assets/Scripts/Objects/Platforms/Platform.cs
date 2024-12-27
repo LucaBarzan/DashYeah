@@ -13,13 +13,13 @@ public class Platform : MonoBehaviour
 
     protected CharacterMovement characterMovement;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Constants & readonly
 
     protected readonly List<Rigidbody2D> othersRigidbody2D = new List<Rigidbody2D>();
 
-    #endregion // Constants & readonly
+    #endregion Constants & readonly
 
     #region Engine
 
@@ -44,7 +44,7 @@ public class Platform : MonoBehaviour
         SubscribeToColliderEvents(false);
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Events
 
@@ -64,7 +64,7 @@ public class Platform : MonoBehaviour
         }
     }
 
-    #endregion // Subscription
+    #endregion Subscription
 
     protected virtual void OnCollision2DEnter(Collider2D other)
     {
@@ -101,5 +101,5 @@ public class Platform : MonoBehaviour
         }
     }
 
-    #endregion // Events
+    #endregion Events
 }

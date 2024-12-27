@@ -13,7 +13,7 @@ public class Particle_Listener : MonoBehaviour
     private ParticleSystem particle;
     private bool raisedFinishedEvent;
     private bool playedOnce;
-    #endregion // Variables
+    #endregion Variables
     
     #region Engine
     
@@ -41,7 +41,7 @@ public class Particle_Listener : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     public void DestroyGameObject()
     {

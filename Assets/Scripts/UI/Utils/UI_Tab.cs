@@ -6,7 +6,7 @@ public class UI_Tab : MonoBehaviour
 
     [SerializeField] private UI_Fade fade;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -28,7 +28,7 @@ public class UI_Tab : MonoBehaviour
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     public void Show() => fade.Show();
 

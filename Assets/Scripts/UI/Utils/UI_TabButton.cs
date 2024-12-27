@@ -14,7 +14,7 @@ public class UI_TabButton : MonoBehaviour
     [SerializeField] private Color activatedColor = Color.white;
     [SerializeField] private Color deactivatedColor = Color.white;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -24,7 +24,7 @@ public class UI_TabButton : MonoBehaviour
     }
 
 
-    #endregion // Engine
+    #endregion Engine
 
     public void SelectTab()
     {

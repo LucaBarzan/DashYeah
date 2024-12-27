@@ -1,0 +1,48 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21e93680c16582341b3fe429ef6f4d8b, type: 3}
+  m_Name: CharacterMovement_Player
+  m_EditorClassIdentifier: 
+  MaxSpeed: 14
+  Acceleration: 120
+  GroundDeceleration: 60
+  AirDeceleration: 30
+  GroundingForce: -2
+  CheckDistance_Vertical: 0.005
+  CheckDistance_Horizontal: 0.005
+  SnapControlOnChangeDirection: 1
+  MaxFallSpeed: 14
+  GoingUpFallAcceleration: 30
+  GoingDownFallAcceleration: 20
+  ImpulseDeceleration: 10
+  ImpulseIncreaseDecelerationSpeed: 10
+  JumpPower: 36
+  JumpAmount: 1
+  JumpApexTime: 0
+  JumpEndEarlyGravityModifier: 3
+  CoyoteTime: 0.15
+  JumpBuffer: 0.2
+  SlopeCheckDistance: 0.2
+  MaxSlopeAngle: 50
+  NotWalkableSlope_MaxSlideSpeed: 20
+  NotWalkableSlope_SlideAcceleration: 110
+  SwimSurfaceThreshold: 0.2
+  WallCling_CheckDistance: 0.05
+  WallCling_WallJumpTime: 0.2
+  WallCling_TimeToSlide: 0
+  WallCling_SlideSpeed: 10
+  WallCling_SlideAcceleration: 10
+  WallCling_StickToWallSpeed: 10
+  WallJump_JumpForce: 0
+  WallJump_FallAcceleration: 10
+  WallJump_JumpAngleDirection: 50
+  WallJump_HorizontalInputDeceleration: 10

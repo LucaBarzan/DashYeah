@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "DamageStats", menuName = "Aumakua/Combat/DamageStats")]
+[CreateAssetMenu(fileName = "DamageStats", menuName = "Scriptable Objects/Combat/DamageStats")]
 public class SO_DealDamage : SO_DealEffect
 {
     public EDamage Type;

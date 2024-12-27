@@ -26,7 +26,7 @@ public class ElevatorPlatform : Platform
     private int STATE_WAITING = 1;
     private readonly StateMachine stateMachine = new StateMachine();
 
-    #endregion // Constants & Read Only
+    #endregion Constants & Read Only
 
     #region Engine
 
@@ -68,7 +68,7 @@ public class ElevatorPlatform : Platform
         }
     }
 
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
@@ -94,7 +94,7 @@ public class ElevatorPlatform : Platform
         stateMachine.AddExitState(STATE_WAITING, Exit_Waiting);
     }
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Core
 
@@ -130,7 +130,7 @@ public class ElevatorPlatform : Platform
         }
     }
 
-    #endregion // Core
+    #endregion Core
 
     #region Events
 
@@ -151,7 +151,7 @@ public class ElevatorPlatform : Platform
         }
     }
 
-    #endregion // Events
+    #endregion Events
 
     #region State machine
 
@@ -183,7 +183,7 @@ public class ElevatorPlatform : Platform
         return Vector2.Dot(direction, currentPointPosition - (Vector2)Transform.position) <= 0.0f;
     }
 
-    #endregion // Moving State
+    #endregion Moving State
 
     #region Waiting State
 
@@ -208,7 +208,7 @@ public class ElevatorPlatform : Platform
 
     }
 
-    #endregion // Waiting State
+    #endregion Waiting State
 
-    #endregion // State machine
+    #endregion State machine
 }

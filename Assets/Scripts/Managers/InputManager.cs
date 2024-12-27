@@ -7,18 +7,14 @@ public class InputManager : Singleton<InputManager>
     #region Variables
 
     /* Public */
-    public PlayerInputActions.DebugActions DebugMap => input.Debug;
-    public PlayerInputActions.UIActions UIMap => input.UI;
-    public PlayerInputActions.InGameActions InGameMap => input.InGame;
-    public PlayerInputActions.MauiActions MauiMap => input.Maui;
-    public PlayerInputActions.DolphinActions DolphinMap => input.Dolphin;
-    public PlayerInputActions.SpiderActions SpiderMap => input.Spider;
-    public PlayerInputActions.GeckoActions GeckoMap => input.Gecko;
+    public Input.UIActions UIActions => input.UI;
+    public Input.InGameActions InGameActions => input.InGame;
+    public Input.PlayerActions PlayerActions => input.Player;
 
     /* Private */
-    private PlayerInputActions input;
+    private Input input;
 
-    #endregion // Variables
+    #endregion Variables
 
     #region Engine
 
@@ -29,31 +25,17 @@ public class InputManager : Singleton<InputManager>
         SetupComponents();
     }
 
-    private void OnEnable()
-    {
-        SubscribeToGameManagerEvents(true);
-    }
+    private void OnEnable() => SubscribeToGameManagerEvents(true);
 
-    void Start()
-    {
-        
-    }
+    private void OnDisable() => SubscribeToGameManagerEvents(false);
 
-    private void OnDisable()
-    {
-        SubscribeToGameManagerEvents(false);
-    }
-
-    #endregion // Engine
+    #endregion Engine
 
     #region Setup
 
-    private void SetupComponents()
-    {
-        input = new PlayerInputActions();
-    }
+    private void SetupComponents() => input = new Input();
 
-    #endregion // Setup
+    #endregion Setup
 
     #region Events
 
@@ -61,7 +43,10 @@ public class InputManager : Singleton<InputManager>
 
     private void SubscribeToGameManagerEvents(bool subscribe)
     {
-        if(subscribe)
+        if (GameManager.Instance == null)
+            return;
+
+        if (subscribe)
         {
             GameManager.Instance.OnGameStateChanged += OnGameStateChanged;
         }
@@ -71,11 +56,11 @@ public class InputManager : Singleton<InputManager>
         }
     }
 
-    #endregion // Subscriptions
+    #endregion Subscriptions
 
     private void OnGameStateChanged(EGameState gameState)
     {
-        if(gameState == EGameState.InGame)
+        if (gameState == EGameState.InGame)
         {
             input.InGame.Enable();
             input.UI.Disable();
@@ -87,5 +72,5 @@ public class InputManager : Singleton<InputManager>
         }
     }
 
-    #endregion // Events
+    #endregion Events
 }

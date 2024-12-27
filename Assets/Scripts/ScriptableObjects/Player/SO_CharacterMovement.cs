@@ -19,10 +19,10 @@ public class SO_CharacterMovement : ScriptableObject
     [Tooltip("A constant downward force applied while grounded. Helps on slopes"), Range(0f, -10f)]
     public float GroundingForce = -1.5f;
 
-    [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
+    [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.1f)]
     public float CheckDistance_Vertical = 0.05f;
 
-    [Tooltip("The detection distance for wall detection"), Range(0f, 0.5f)]
+    [Tooltip("The detection distance for wall detection"), Range(0f, 0.1f)]
     public float CheckDistance_Horizontal = 0.05f;
 
     [Tooltip("Reset the player velocity when change direction to avoid slinding?")]

@@ -12,7 +12,7 @@ public class UI_Button_Level : UI_Button
     public string LevelName = "";
     [SerializeField] private TextMeshProUGUI textMesh;
 
-    #endregion // Variables
+    #endregion Variables
 
     public void LoadLevel()
     {

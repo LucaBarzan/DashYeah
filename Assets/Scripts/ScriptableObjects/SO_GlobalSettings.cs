@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-[CreateAssetMenu(fileName = "PlayerSettings", menuName = "Aumakua/Player/PlayerSettings")]
+[CreateAssetMenu(fileName = "GlobalSettings", menuName = "Scriptable Objects/GlobalSettings")]
 public class SO_GlobalSettings : ScriptableObject
 {
     [Header("Layers")]
@@ -27,10 +27,6 @@ public class SO_GlobalSettings : ScriptableObject
     public LayerMask HitboxesLayers;
 
     public LayerMask IgnoreRaycastLayer;
-
-    [Header("Tags")]
-    [Tooltip("The tag name of the Hazard tag")]
-    public string HazardTag;
 
     [Header("Scenes")]
     public string[] NonGameplayScenes;
