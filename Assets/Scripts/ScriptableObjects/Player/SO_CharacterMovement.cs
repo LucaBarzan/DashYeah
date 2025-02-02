@@ -25,9 +25,6 @@ public class SO_CharacterMovement : ScriptableObject
     [Tooltip("The detection distance for wall detection"), Range(0f, 0.1f)]
     public float CheckDistance_Horizontal = 0.05f;
 
-    [Tooltip("Reset the player velocity when change direction to avoid slinding?")]
-    public bool SnapControlOnChangeDirection = true;
-
     [Header("Physics")]
     [Tooltip("The maximum vertical movement speed")]
     public float MaxFallSpeed = 40;
@@ -65,9 +62,6 @@ public class SO_CharacterMovement : ScriptableObject
     public float JumpBuffer = 0.2f;
 
     [Header("Slope")]
-    [Tooltip("The detection distance for slope detection")]
-    public float SlopeCheckDistance = 0.2f;
-
     [Tooltip("The max slope angle that the player is able to walk on")]
     public float MaxSlopeAngle = 50.0f;
 

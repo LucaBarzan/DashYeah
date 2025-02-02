@@ -1,3 +1,4 @@
+using NUnit.Framework.Internal;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,18 +24,19 @@ public class CharacterMovement : Object
 
     // Base Movement
     private bool canMove = false;
-    private Vector3 movementDirection;
-    private Vector3 lastMovementDirection;
+    private Vector3 targetDirection;
+    private Vector3 lastTargetDirection;
 
     private RaycastHit[] groundHits;
     private RaycastHit groundHit;
     private bool ceilingHit;
 
     private bool isGrounded = false;
-    private float horizontalSpeed;
+    private float speed;
     private float frameLeftGrounded = float.MinValue;
     private float frameResistance = 1.0f;
 
+    private Vector3 targetVelocity;
     private Vector3 velocity;
     private Vector3 frameOverrideVelocity;
     private Vector3 frameAdditionalVelocity;
@@ -185,15 +187,24 @@ public class CharacterMovement : Object
 
     private void CheckCollisions()
     {
-        Vector3 p1 = Transform.position + capsuleCollider.center + Vector3.up * -capsuleCollider.height * 0.5f;
-        Vector3 p2 = p1 + Vector3.up * capsuleCollider.height;
+        // Calculate the center position
+        Vector3 centerPosition = Transform.position + capsuleCollider.center;
+        // Calculate the top position
+        Vector3 p1 = centerPosition + (capsuleCollider.height * 0.5f * Vector3.up);
+        // Calculate the top sphere position
+        p1 += capsuleCollider.radius * Vector3.down;
+
+        // Calculate the bottom position
+        Vector3 p2 = centerPosition + (capsuleCollider.height * 0.5f * Vector3.down);
+        // Calculate the bottom sphere position
+        p2 += capsuleCollider.radius * Vector3.up;
 
         // Ground and Ceiling
         groundHits = Physics.CapsuleCastAll(p1, p2, capsuleCollider.radius, Vector3.down, movementStats.CheckDistance_Vertical, Utils.GlobalSettings.WalkableLayers);
 
         ceilingHit = Physics.CapsuleCast(p1, p2, capsuleCollider.radius, Vector3.up, movementStats.CheckDistance_Vertical, Utils.GlobalSettings.ObstacleLayers);
 
-        wallHits = Physics.CapsuleCastAll(p1, p2, capsuleCollider.radius, movementDirection, movementStats.CheckDistance_Horizontal, Utils.GlobalSettings.ObstacleLayers);
+        wallHits = Physics.CapsuleCastAll(p1, p2, capsuleCollider.radius, targetDirection, movementStats.CheckDistance_Horizontal, Utils.GlobalSettings.ObstacleLayers);
     }
 
     private void GatherCollisionsValues()
@@ -222,7 +233,7 @@ public class CharacterMovement : Object
         // Hit a Ceiling
         if (ceilingHit)
         {
-            velocity.y = Mathf.Min(0, velocity.y);
+            targetVelocity.y = Mathf.Min(0, targetVelocity.y);
         }
 
         bool hitSomething = !groundHit.IsNull() || !wallHit.IsNull() || ceilingHit;
@@ -253,7 +264,7 @@ public class CharacterMovement : Object
         slopeAngle = Vector3.Angle(groundHit.normal, Vector3.up);
         walkableGround = slopeAngle <= movementStats.MaxSlopeAngle;
 
-        groundDirection = Vector3.zero;//TODO: -Vector3.Perpendicular(groundHit.normal).normalized;
+        groundDirection = Vector3.ProjectOnPlane(Vector3.down, groundHit.normal);
         groundFlowSign = Mathf.Sign(Vector3.Dot(groundDirection, Vector3.down));
     }
 
@@ -261,7 +272,7 @@ public class CharacterMovement : Object
     {
         if (!isGrounded &&
             !wallHit.IsNull() &&
-            velocity.y <= 0.0f &&
+            targetVelocity.y <= 0.0f &&
             stateMachine.CurrentState != STATE_WALL_JUMP)
         {
             stateMachine.CurrentState = STATE_WALL_CLING;
@@ -272,7 +283,7 @@ public class CharacterMovement : Object
             environment.Stats.CanSwimCrawl &&
             stateMachine.CurrentState != STATE_JUMP &&
             Transform.position.y >= SwimYThresholdPosition &&
-            velocity.y >= 0.0f)
+            targetVelocity.y >= 0.0f)
         {
             stateMachine.CurrentState = STATE_SWIM;
             return;
@@ -293,7 +304,7 @@ public class CharacterMovement : Object
         IncreaseDecelerationSpeed();
 
         // Increase the deceleration speed even more if the input direction is performed in the opposite direction to the impulse direction
-        if (Vector3.Dot(movementDirection, impulseForce.normalized) < 0.0f)
+        if (Vector3.Dot(targetDirection, impulseForce.normalized) < 0.0f)
             IncreaseDecelerationSpeed();
 
         impulseForce = Vector3.MoveTowards(impulseForce, Vector3.zero, movementStats.ImpulseDeceleration * impulseDecelerationSpeed * Time.fixedDeltaTime);
@@ -305,19 +316,19 @@ public class CharacterMovement : Object
     private void ApplyMovement()
     {
         if (frameOverrideVelocity != Vector3.zero)
-            velocity = frameOverrideVelocity;
+            targetVelocity = frameOverrideVelocity;
 
-        velocity += frameAdditionalVelocity;
+        targetVelocity += frameAdditionalVelocity;
         HandleImpulseForce();
 
-        Vector3 resultVelocity = velocity;
+        Vector3 resultVelocity = targetVelocity;
         resultVelocity *= frameResistance;
         resultVelocity += baseForce;
         resultVelocity += impulseForce;
 
         rigidbody.linearVelocity = resultVelocity;
 
-        lastMovementDirection = movementDirection;
+        lastTargetDirection = targetDirection;
         frameAdditionalVelocity = baseForce = frameOverrideVelocity = Vector3.zero;
         frameResistance = 1.0f;
     }
@@ -331,8 +342,8 @@ public class CharacterMovement : Object
 
     private void ResetGravity()
     {
-        velocity.y = 0.0f;
-        OverrideForce(velocity);
+        targetVelocity.y = 0.0f;
+        OverrideForce(targetVelocity);
     }
 
     #endregion Core
@@ -371,35 +382,35 @@ public class CharacterMovement : Object
     {
         var orientationDirection = Transform.forward;
 
-        if (movementDirection != Vector3.zero)
-            orientationDirection = movementDirection;
+        if (!walkableGround)
+            orientationDirection = groundDirection;
+        else if (targetDirection != Vector3.zero)
+            orientationDirection = targetDirection;
 
         Transform.rotation = Quaternion.LookRotation(orientationDirection, Vector3.up);
     }
 
     private void HandleSpeed_Grounded()
     {
-        // TODO
-        /* if (!walkableGround)
+        if (!walkableGround)
         {
             // Add reverse velocity to the player
-            horizontalVelocity = Mathf.MoveTowards(horizontalSpeed,
-                movementStats.NotWalkableSlope_MaxSlideSpeed * groundFlowSign,
+            speed = Mathf.MoveTowards(speed,
+                movementStats.NotWalkableSlope_MaxSlideSpeed,
                 movementStats.NotWalkableSlope_SlideAcceleration * Time.fixedDeltaTime);
         }
-        else*/
-        if (movementDirection == Vector3.zero)
+        else if (targetDirection == Vector3.zero)
         {
             var deceleration = movementStats.GroundDeceleration;
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, 0, deceleration * Time.fixedDeltaTime);
+            speed = Mathf.MoveTowards(speed, 0, deceleration * Time.fixedDeltaTime);
         }
         // Is grounded or on the air
         else
         {
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, movementStats.MaxSpeed, movementStats.Acceleration * Time.fixedDeltaTime);
+            speed = Mathf.MoveTowards(speed, movementStats.MaxSpeed, movementStats.Acceleration * Time.fixedDeltaTime);
         }
 
-        velocity = horizontalSpeed * Transform.forward;
+        targetVelocity = speed * Vector3.ProjectOnPlane(Transform.forward, groundHit.normal);
     }
 
     private void HandleGravity_Grounded()
@@ -407,24 +418,15 @@ public class CharacterMovement : Object
         // If it is grounded but there is upwards force in the , apply upwards force anyway
         if (environment != null && environment.Stats.BuoyancyForce > 0 && isSubmerged)
         {
-            velocity.y = Mathf.MoveTowards(velocity.y, environment.Stats.BuoyancyForce, environment.Stats.BuoyancyForce * Time.fixedDeltaTime);
+            targetVelocity.y = Mathf.MoveTowards(targetVelocity.y, environment.Stats.BuoyancyForce, environment.Stats.BuoyancyForce * Time.fixedDeltaTime);
             return;
         }
 
-        if (frameAdditionalVelocity != Vector3.zero)
+        if (frameAdditionalVelocity != Vector3.zero || !walkableGround)
             return;
 
-        // TODO
-        // Apply the ground Y direction to the Y velocity
-        velocity.y = groundDirection.y * horizontalSpeed;
-
-        if (velocity.y != 0)
-            Debug.Log(velocity.y);
-
-        Debug.DrawRay(groundHit.point, groundHit.normal, Color.red, 5.0f);
-
         // Apply the grounded force to the ground perpendicular direction
-        velocity += groundHit.normal * movementStats.GroundingForce;
+        targetVelocity += groundHit.normal * movementStats.GroundingForce;
     }
 
     #endregion Grounded State
@@ -444,7 +446,7 @@ public class CharacterMovement : Object
 
     private void FixedUpdate_Jump()
     {
-        HandleDirection_Airborne();
+        HandleSpeed_Airborne();
         HandleGravity_Jump(movementStats.GoingUpFallAcceleration, movementStats.GoingDownFallAcceleration);
     }
 
@@ -484,10 +486,10 @@ public class CharacterMovement : Object
     {
         ResetImpulseValues();
 
-        velocity.y = movementStats.JumpPower;
+        targetVelocity.y = movementStats.JumpPower;
 
         if (isOnEnvironmentSurfaceLevel)
-            velocity.y *= environment.Stats.EnvironmentSurfaceJumpMultiplier;
+            targetVelocity.y *= environment.Stats.EnvironmentSurfaceJumpMultiplier;
 
         stateMachine.CurrentState = STATE_JUMP;
     }
@@ -520,7 +522,7 @@ public class CharacterMovement : Object
             // Going Up
             case 0:
                 // If it is still going up, continue to apply gravity
-                if (velocity.y > 0.0f)
+                if (targetVelocity.y > 0.0f)
                 {
                     HandleGravity_Airborne(goingUpGravity, goingDownGravity);
                     break;
@@ -533,7 +535,7 @@ public class CharacterMovement : Object
                     return;
                 }
 
-                velocity.y = 0.0f;
+                targetVelocity.y = 0.0f;
                 jumpApexTime = Time.time + movementStats.JumpApexTime;
                 jumpSubState++;
                 break;
@@ -566,7 +568,8 @@ public class CharacterMovement : Object
             return;
         }
 
-        HandleDirection_Airborne();
+        HandleOrientation_Airborne();
+        HandleSpeed_Airborne();
         HandleGravity_Airborne(movementStats.GoingUpFallAcceleration, movementStats.GoingDownFallAcceleration);
     }
 
@@ -574,35 +577,40 @@ public class CharacterMovement : Object
     {
 
     }
-
-    private void HandleDirection_Airborne() => HandleDirection_Airborne(movementStats.Acceleration);
-
-    private void HandleDirection_Airborne(float acceleration)
+    private void HandleOrientation_Airborne()
     {
-        float horizontalInput = movementDirection.x;
+        var orientationDirection = Transform.forward;
 
-        if (horizontalInput == 0)
+        if (targetDirection != Vector3.zero)
+            orientationDirection = targetDirection;
+
+        Transform.rotation = Quaternion.LookRotation(orientationDirection, Vector3.up);
+    }
+
+    private void HandleSpeed_Airborne() => HandleSpeed_Airborne(movementStats.Acceleration);
+
+    private void HandleSpeed_Airborne(float acceleration)
+    {
+        if (targetDirection == Vector3.zero)
         {
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, 0, movementStats.AirDeceleration * impulseHorizontalMultiplier * Time.fixedDeltaTime);
+            var deceleration = movementStats.AirDeceleration;
+            speed = Mathf.MoveTowards(speed, 0, deceleration * Time.fixedDeltaTime);
         }
         // Is grounded or on the air
         else
         {
-            float horizontalTargetSpeed = movementStats.MaxSpeed * horizontalInput;
-
-            if (movementStats.SnapControlOnChangeDirection && movementDirection != lastMovementDirection)
-                horizontalSpeed *= -1;
-
-            horizontalSpeed = Mathf.MoveTowards(horizontalSpeed, horizontalTargetSpeed, acceleration * impulseHorizontalMultiplier * Time.fixedDeltaTime);
+            speed = Mathf.MoveTowards(speed, movementStats.MaxSpeed, acceleration * Time.fixedDeltaTime);
         }
 
-        velocity.x = horizontalSpeed;
+        float gravity = targetVelocity.y;
+        Vector3 horizontalVelocity = speed * Transform.forward;
+        targetVelocity = new Vector3(horizontalVelocity.x, gravity, horizontalVelocity.z);
     }
 
     private void HandleGravity_Airborne(float goingUpGravity, float goingDownGravity)
     {
         float targetYvelocity = -movementStats.MaxFallSpeed;
-        bool goingUp = velocity.y > 0;
+        bool goingUp = targetVelocity.y > 0;
         float inAirGravity = goingUp ? goingUpGravity : goingDownGravity;
 
         if (isSubmerged)
@@ -620,7 +628,7 @@ public class CharacterMovement : Object
             inAirGravity *= movementStats.JumpEndEarlyGravityModifier;
         }
 
-        velocity.y = Mathf.MoveTowards(velocity.y, targetYvelocity, inAirGravity * Time.fixedDeltaTime);
+        targetVelocity.y = Mathf.MoveTowards(targetVelocity.y, targetYvelocity, inAirGravity * Time.fixedDeltaTime);
     }
 
     #endregion Airborne State
@@ -629,7 +637,7 @@ public class CharacterMovement : Object
 
     private void Enter_Swim_Crawl()
     {
-        velocity.y = 0;
+        targetVelocity.y = 0;
 
         ResetJumpValues();
     }
@@ -642,7 +650,7 @@ public class CharacterMovement : Object
             return;
         }
 
-        HandleDirection_Airborne();
+        HandleSpeed_Airborne();
         HandleSwimming();
     }
 
@@ -706,12 +714,12 @@ public class CharacterMovement : Object
     private void HandleGravity_WallCling()
     {
         if (Time.time >= wallClingSlideTime)
-            velocity.y = Mathf.MoveTowards(velocity.y, -movementStats.WallCling_SlideSpeed, movementStats.WallCling_SlideAcceleration * Time.fixedDeltaTime);
+            targetVelocity.y = Mathf.MoveTowards(targetVelocity.y, -movementStats.WallCling_SlideSpeed, movementStats.WallCling_SlideAcceleration * Time.fixedDeltaTime);
     }
 
     private void HandleDirection_WallCling()
     {
-        if (velocity.x != 0.0f)
+        if (targetVelocity.x != 0.0f)
             return;
 
         Vector3 newposition = new Vector3(wallPositionX, Transform.position.y);
@@ -738,7 +746,7 @@ public class CharacterMovement : Object
 
         // TODO
         // SetHorizontalDirection(wallJumpResult.x);
-        horizontalSpeed = wallJumpResult.x;
+        speed = wallJumpResult.x;
         wallJumpHorizontalControl = 0.0f;
 
         // Setup Jump variables
@@ -766,7 +774,7 @@ public class CharacterMovement : Object
             movementStats.Acceleration,
             movementStats.WallJump_HorizontalInputDeceleration * Time.fixedDeltaTime);
 
-        HandleDirection_Airborne(wallJumpHorizontalControl);
+        HandleSpeed_Airborne(wallJumpHorizontalControl);
     }
 
     #endregion Wall Jump State
@@ -775,7 +783,7 @@ public class CharacterMovement : Object
 
     #region Public methods
 
-    public void SetMovementDirection(Vector3 direction) => movementDirection = direction;
+    public void SetTargetDirection(Vector3 direction) => targetDirection = direction;
 
     /// <summary> Adiciona uma força à velocidade do personagem </summary>
     public virtual void AddForce(in Vector3 forceDirection) => frameAdditionalVelocity += forceDirection;
@@ -803,7 +811,7 @@ public class CharacterMovement : Object
     /// </summary>
     public virtual void OverrideForce(Vector3 forceDirection)
     {
-        velocity = frameOverrideVelocity = forceDirection;
+        targetVelocity = frameOverrideVelocity = forceDirection;
 
         if (!isActiveAndEnabled || !canMove)
             rigidbody.linearVelocity = forceDirection;
@@ -827,7 +835,7 @@ public class CharacterMovement : Object
 
         if (resetVelocity)
         {
-            rigidbody.linearVelocity = velocity = Vector3.zero;
+            rigidbody.linearVelocity = targetVelocity = Vector3.zero;
         }
     }
 
@@ -838,4 +846,13 @@ public class CharacterMovement : Object
     private int GetDefaultMovementState() => isGrounded ? STATE_GROUNDED : STATE_AIRBORNE;
 
     #endregion Utils
+
+    private void OnDrawGizmos()
+    {
+        if(!groundHit.IsNull())
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(groundHit.point, 0.1f);
+        }
+    }
 }

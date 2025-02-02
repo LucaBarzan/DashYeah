@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(ColliderListener))]
 public class EnvironmentArea : MonoBehaviour
 {
     #region Variables
@@ -21,7 +21,7 @@ public class EnvironmentArea : MonoBehaviour
     [SerializeField] private SO_CharacterMovement environmentMovementStats;
     [SerializeField] private SO_EnvironmentStats environmentStats;
 
-    private Collider myCollider;
+    private ColliderListener myCollider;
     private Collider2D myCollider2D;
 
     #endregion Variables
@@ -30,7 +30,7 @@ public class EnvironmentArea : MonoBehaviour
 
     void Awake()
     {
-        myCollider = GetComponent<Collider>();
+        myCollider = GetComponent<ColliderListener>();
         myCollider2D = GetComponent<Collider2D>();
 
         myCollider.OnCollisionEnter.AddListener(OnCollision2DEnter);

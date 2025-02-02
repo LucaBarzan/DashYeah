@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(ColliderListener))]
 public class LoadScene : MonoBehaviour
 {
     #region Variables
@@ -11,7 +11,7 @@ public class LoadScene : MonoBehaviour
 
     [SerializeField] string sceneName;
 
-    private Collider myCollider;
+    private ColliderListener myCollider;
     protected Player player {  get; private set; }
 
     #endregion Variables
@@ -27,7 +27,7 @@ public class LoadScene : MonoBehaviour
         }
 
         Collider2D = GetComponent<Collider2D>();
-        myCollider = GetComponent<Collider>();
+        myCollider = GetComponent<ColliderListener>();
         myCollider.OnCollisionEnter.AddListener(OnCollision2DEnter);
     }
     

@@ -9,7 +9,7 @@ public class Platform : MonoBehaviour
     public Transform Transform { get; private set; }
     public Collider2D Collider2D { get; private set; }
 
-    [SerializeField] protected Collider myCollider;
+    [SerializeField] protected ColliderListener myCollider;
 
     protected CharacterMovement characterMovement;
 

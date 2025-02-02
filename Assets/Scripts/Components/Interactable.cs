@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(Collider))]
+[RequireComponent(typeof(ColliderListener))]
 public class Interactable : MonoBehaviour
 {
     #region Variables
@@ -29,7 +29,7 @@ public class Interactable : MonoBehaviour
 
     /* Private variables */
     private Transform myTransform;
-    private Collider myCollider;
+    private ColliderListener myCollider;
     private SpriteRenderer promptIconSpriteRenderer;
     private Vector3 promptInitialScale;
     private bool lastInteractionAvailable;
@@ -60,7 +60,7 @@ public class Interactable : MonoBehaviour
     protected virtual void Awake()
     {
         myTransform = transform;
-        myCollider = GetComponent<Collider>();
+        myCollider = GetComponent<ColliderListener>();
         Collider2D = GetComponent<Collider2D>();
         input = new Input();
         interactInputAction = input.FindAction(interactInput.action.name);

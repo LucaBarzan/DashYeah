@@ -12,29 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21e93680c16582341b3fe429ef6f4d8b, type: 3}
   m_Name: CharacterMovement_Player
   m_EditorClassIdentifier: 
-  MaxSpeed: 14
+  MaxSpeed: 7
   Acceleration: 120
   GroundDeceleration: 60
   AirDeceleration: 30
-  GroundingForce: -2
-  CheckDistance_Vertical: 0.005
+  GroundingForce: -1
+  CheckDistance_Vertical: 0.05
   CheckDistance_Horizontal: 0.005
-  SnapControlOnChangeDirection: 1
   MaxFallSpeed: 14
   GoingUpFallAcceleration: 30
   GoingDownFallAcceleration: 20
   ImpulseDeceleration: 10
   ImpulseIncreaseDecelerationSpeed: 10
-  JumpPower: 36
+  JumpPower: 12
   JumpAmount: 1
   JumpApexTime: 0
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2
-  SlopeCheckDistance: 0.2
-  MaxSlopeAngle: 50
-  NotWalkableSlope_MaxSlideSpeed: 20
-  NotWalkableSlope_SlideAcceleration: 110
+  MaxSlopeAngle: 10
+  NotWalkableSlope_MaxSlideSpeed: 40
+  NotWalkableSlope_SlideAcceleration: 20
   SwimSurfaceThreshold: 0.2
   WallCling_CheckDistance: 0.05
   WallCling_WallJumpTime: 0.2

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Collider : MonoBehaviour
+public class ColliderListener : MonoBehaviour
 {
     #region Variables
 

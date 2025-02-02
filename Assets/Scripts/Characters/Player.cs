@@ -104,7 +104,7 @@ public class Player : Character
         Vector3 movementDirection = input.Player.Movement.ReadValue<Vector2>();
         movementDirection = new Vector3 (movementDirection.x, 0.0f, movementDirection.y);
 
-        movement.SetMovementDirection(movementDirection);
+        movement.SetTargetDirection(movementDirection);
     }
 
     #endregion Input
